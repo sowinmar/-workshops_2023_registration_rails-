@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:destroy]
+  before_action :set_task, only: [:destroy, :edit, :update]
 
   def index
     @tasks = Task.all.order(deadline: :asc)
@@ -16,6 +16,17 @@ class TasksController < ApplicationController
       redirect_to tasks_url, notice: 'Task successfully created.'
     else
       render :new
+    end
+  end
+
+  def edit; end
+
+  def update
+    if @task.update(task_params)
+      redirect_to tasks_url, notice: 'Task successfully updated.'
+    else
+      flash.now[:notice] = 'Task failed to update.'
+      render :edit
     end
   end
 
